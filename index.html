@@ -1,0 +1,2386 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>АНО «ЦМК» — Центр Международной Кооперации</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Days+One&family=Evolventa:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+    <style>
+        :root {
+            --color-primary: #014A4F;
+            --color-secondary: #09979A;
+            --color-white: #FFFFFF;
+            --color-mint: #73D1CB;
+            --color-dark-teal: #044B50;
+            --color-black: #001B1B;
+            --bg-light: #F8FAFA;
+            --bg-white: #FFFFFF;
+            --text-dark: #001B1B;
+            --text-gray: #4A5A5A;
+            --border-light: rgba(1, 74, 79, 0.08);
+            --font-heading: 'Days One', sans-serif;
+            --font-body: 'Evolventa', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 400;
+            line-height: 1.2;
+            letter-spacing: 0.02em;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ============================================================
+           ФОНОВЫЕ ПЛАНЕТЫ (ВОЗВРАЩЕНЫ, ВСЕГДА ВИДНЫ)
+           ============================================================ */
+        .bg-planet {
+            position: fixed;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.02;
+            background-image: url('black.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .bg-planet.left {
+            width: 45vw;
+            height: 45vw;
+            max-width: 550px;
+            max-height: 550px;
+            left: -8%;
+            top: 15%;
+            animation: floatPlanetLeft 30s ease-in-out infinite alternate;
+        }
+
+        .bg-planet.right {
+            width: 70vw;
+            height: 70vw;
+            max-width: 900px;
+            max-height: 900px;
+            right: -12%;
+            top: 5%;
+            animation: floatPlanetRight 35s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatPlanetLeft {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { transform: translate(15px, -15px) rotate(4deg) scale(1.04); }
+        }
+
+        @keyframes floatPlanetRight {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            100% { transform: translate(-20px, 20px) rotate(-4deg) scale(1.05); }
+        }
+
+        /* ============================================================
+           НАВИГАЦИЯ
+           ============================================================ */
+        .main-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(1, 74, 79, 0.06);
+            padding: 0 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .main-nav.scrolled {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 4px 30px rgba(1, 74, 79, 0.06);
+        }
+
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px;
+            position: relative;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .nav-logo .logo-desktop {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .nav-logo .logo-desktop img {
+            height: 42px;
+            width: auto;
+        }
+        .nav-logo .logo-desktop .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+        }
+        .nav-logo .logo-desktop .logo-text .top {
+            font-family: var(--font-heading);
+            font-size: 0.6rem;
+            color: var(--color-secondary);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+        .nav-logo .logo-desktop .logo-text .bottom {
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            color: var(--color-primary);
+            letter-spacing: 0.02em;
+        }
+
+        .nav-logo .logo-mobile {
+            display: none;
+            align-items: center;
+        }
+        .nav-logo .logo-mobile img {
+            height: 36px;
+            width: auto;
+        }
+
+        .burger-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 1001;
+        }
+
+        .burger-btn span {
+            display: block;
+            width: 24px;
+            height: 2.5px;
+            background: var(--color-primary);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .burger-btn.active span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+        .burger-btn.active span:nth-child(2) { opacity: 0; }
+        .burger-btn.active span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+
+        .nav-links {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            list-style: none;
+            padding: 4px 0;
+        }
+
+        .nav-links a {
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-family: var(--font-body);
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-gray);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .nav-links a:hover {
+            color: var(--color-primary);
+            background: rgba(1, 74, 79, 0.04);
+        }
+
+        .nav-links a.active {
+            color: var(--color-white);
+            background: var(--color-primary);
+            box-shadow: 0 4px 15px rgba(1, 74, 79, 0.2);
+        }
+
+        /* ============================================================
+           ОБЩИЕ СТИЛИ СЕКЦИЙ
+           ============================================================ */
+        section.main-section {
+            position: relative;
+            z-index: 1;
+            padding: 100px 2rem 80px;
+            min-height: 100vh;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            background: transparent;
+            will-change: transform;
+        }
+
+        section.main-section.active {
+            display: flex;
+        }
+
+        /* Анимации смахивания */
+        @keyframes slideInFromRight {
+            from { transform: translateX(100%); opacity: 0.4; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        @keyframes slideOutToLeft {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(-100%); opacity: 0.4; }
+        }
+
+        section.main-section.sliding-in {
+            animation: slideInFromRight 0.7s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+        }
+
+        section.main-section.sliding-out {
+            display: flex !important;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            animation: slideOutToLeft 0.7s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .section-badge {
+            display: inline-block;
+            font-family: var(--font-heading);
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--color-secondary);
+            margin-bottom: 0.8rem;
+            padding: 5px 16px;
+            border: 1px solid rgba(9, 151, 154, 0.2);
+            border-radius: 40px;
+            background: rgba(9, 151, 154, 0.04);
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .section-title .accent { color: var(--color-secondary); }
+
+        .section-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-gray);
+            max-width: 700px;
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+        }
+
+        .card {
+            background: var(--bg-white);
+            border-radius: 24px;
+            padding: 2rem;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 20px rgba(1, 74, 79, 0.04);
+            transition: all 0.4s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 12px 40px rgba(1, 74, 79, 0.08);
+            border-color: rgba(1, 74, 79, 0.12);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 32px;
+            border-radius: 60px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.03em;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-white);
+            box-shadow: 0 8px 25px rgba(1, 74, 79, 0.2);
+        }
+        .btn-primary:hover {
+            background: var(--color-secondary);
+            box-shadow: 0 8px 35px rgba(9, 151, 154, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* ============================================================
+           HERO (СОТРУДНИЧЕСТВО) — КАРТИНКА ВЫЛЕЗАЕТ СПРАВА И СНИЗУ
+           ============================================================ */
+        .hero-section {
+            position: relative;
+            overflow: visible;   /* было hidden — теперь картинка может вылезать */
+            padding: 0;
+        }
+
+        .hero-content-wrapper {
+            position: relative;
+            z-index: 2;
+            padding: 120px 2rem 60px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Родитель: ширина = ширине белого блока, без overflow */
+        .hero-block {
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    margin-bottom: 120px;   /* отступ = величине вылезания картинки снизу */
+}
+
+        /* Картинка — отдельный слой, вылезает справа на 100px и снизу на 120px */
+        .hero-bg-photo {
+            position: absolute;
+            top: -200px;
+            left: 0;
+            right: -300px;      /* вылезает справа на 100px */
+            bottom: 0;     /* вылезает снизу на 120px */
+            background-image: url('city.webp');
+            background-size: cover;
+            background-position: center 40%;
+            background-repeat: no-repeat;
+            border-radius: 32px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            position: relative;
+            z-index: 1;                       /* поверх картинки */
+            border-radius: 32px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 12px 40px rgba(1, 74, 79, 0.06);
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.82);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .hero-content > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Подпись автора — внутри блока, внизу */
+        .hero-credit {
+            position: absolute;
+            bottom: 12px;
+            right: 20px;
+            z-index: 5;
+            font-size: 0.6rem;
+            color: rgba(0, 27, 27, 0.45);
+            font-family: var(--font-body);
+            letter-spacing: 0.03em;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 2px 8px;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        /* Отступ между блоком с видео и вступительным текстом */
+        .hero-intro-text {
+            max-width: 900px;
+            margin-top: 3.5rem;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+            color: var(--text-dark);
+            line-height: 1.8;
+        }
+
+        .hero-intro-text p {
+            margin-bottom: 1rem;
+        }
+
+        .hero .section-badge {
+            font-size: 0.85rem;
+            padding: 10px 28px;
+            letter-spacing: 0.25em;
+            color: var(--color-primary);
+            background: rgba(115, 209, 203, 0.12);
+            border-color: rgba(115, 209, 203, 0.3);
+            margin-bottom: 1.2rem;
+        }
+
+        .hero-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: var(--color-primary);
+            margin-bottom: 1rem;
+            line-height: 1.25;
+        }
+
+        .hero-title .highlight { color: var(--color-secondary); }
+
+        .hero-subtitle {
+            font-size: 1.05rem;
+            color: var(--text-gray);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            line-height: 1.7;
+        }
+
+        /* ЦИФРЫ ПОСЛЕ ПОДЗАГОЛОВКА */
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat .number {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            color: var(--color-secondary);
+            line-height: 1;
+        }
+
+        .hero-stat .label {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            margin-top: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            line-height: 1.4;
+        }
+
+        /* РЕАЛЬНОЕ ВИДЕО */
+        .hero-video-wrap {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(1, 74, 79, 0.12);
+            background: #000;
+            margin-bottom: 2rem;
+        }
+
+        .hero-video-wrap video {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 24px;
+        }
+
+        /* ВСТУПИТЕЛЬНЫЙ ТЕКСТ И 3 ПУНКТА */
+        .hero-why-now {
+            max-width: 900px;
+            margin-bottom: 3rem;
+        }
+
+        .hero-why-now h3 {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-why-now-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .hero-why-now-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid rgba(1, 74, 79, 0.06);
+        }
+
+        .hero-why-now-item .num {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            color: var(--color-secondary);
+            min-width: 32px;
+        }
+
+        .hero-why-now-item p {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .hero-why-now-item strong {
+            color: var(--color-primary);
+        }
+
+        /* ============================================================
+           ПРОДУКТЫ (ПЕРЕНЕСЕНЫ ВНУТРЬ HERO)
+           ============================================================ */
+        .products-in-hero {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 40px 2rem 80px;
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 40px 40px 0 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 -10px 40px rgba(1, 74, 79, 0.04);
+        }
+
+        .products-in-hero .section-badge {
+            margin-top: 0;
+        }
+
+        .product-tabs {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .product-tab {
+            padding: 12px 28px;
+            border-radius: 60px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.8rem;
+            border: 1.5px solid rgba(1, 74, 79, 0.12);
+            background: transparent;
+            color: var(--text-gray);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.03em;
+        }
+
+        .product-tab:hover {
+            border-color: var(--color-secondary);
+            color: var(--color-secondary);
+        }
+
+        .product-tab.active {
+            background: var(--color-primary);
+            color: var(--color-white);
+            border-color: var(--color-primary);
+            box-shadow: 0 8px 25px rgba(1, 74, 79, 0.2);
+        }
+
+        .product-panel { display: none; animation: fadeInUp 0.6s ease forwards; }
+        .product-panel.active { display: block; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(1, 74, 79, 0.06);
+        }
+
+        .product-header h3 {
+            font-size: 1.8rem;
+            color: var(--color-primary);
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .product-price {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            color: var(--color-secondary);
+            background: rgba(9, 151, 154, 0.06);
+            padding: 8px 20px;
+            border-radius: 40px;
+            white-space: nowrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
+        }
+
+        .product-body h4 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            color: var(--color-primary);
+            margin: 1.5rem 0 0.8rem;
+        }
+
+        .product-body h4:first-child { margin-top: 0; }
+
+        .product-body p {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            margin-bottom: 0.8rem;
+            line-height: 1.7;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .product-body ul { list-style: none; padding: 0; margin: 0.5rem 0 1rem; }
+
+        .product-body ul li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .product-body ul li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--color-secondary);
+            font-weight: 700;
+        }
+
+        .product-body strong { color: var(--color-primary); font-weight: 700; }
+
+        .price-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .price-table th {
+            text-align: left;
+            padding: 12px 16px;
+            background: rgba(1, 74, 79, 0.04);
+            color: var(--color-primary);
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-bottom: 2px solid rgba(1, 74, 79, 0.08);
+        }
+
+        .price-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid rgba(1, 74, 79, 0.05);
+            color: var(--text-gray);
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .price-table tr:hover td { background: rgba(1, 74, 79, 0.02); }
+
+        /* ============================================================
+           КАРТОЧКИ ПРОДУКТОВ (вместо таблицы)
+           ============================================================ */
+        .products-cards-wrap {
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .products-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+        }
+
+        .product-card {
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 1.8rem 1.5rem;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 20px rgba(1, 74, 79, 0.04);
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-mint));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .product-card:hover::before { opacity: 1; }
+
+        .product-card:hover {
+            box-shadow: 0 12px 40px rgba(1, 74, 79, 0.1);
+            transform: translateY(-4px);
+        }
+
+        .product-card .card-num {
+            font-family: var(--font-heading);
+            font-size: 0.7rem;
+            color: var(--color-secondary);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .product-card .card-title {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            color: var(--color-primary);
+            line-height: 1.3;
+        }
+
+        .product-card .card-price {
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            color: var(--color-secondary);
+            background: rgba(9, 151, 154, 0.08);
+            padding: 6px 14px;
+            border-radius: 40px;
+            align-self: flex-start;
+            margin: 0.3rem 0;
+        }
+
+        .product-card .card-for {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            line-height: 1.5;
+            margin-top: auto;
+        }
+
+        /* Стрелки карусели — показываются только на мобильных */
+        .products-carousel-nav {
+            display: none;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.2rem;
+        }
+
+        .products-carousel-nav button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 1.5px solid rgba(1, 74, 79, 0.15);
+            background: var(--bg-white);
+            color: var(--color-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(1, 74, 79, 0.06);
+        }
+
+        .products-carousel-nav button:hover {
+            background: var(--color-primary);
+            color: var(--color-white);
+            border-color: var(--color-primary);
+        }
+
+        /* Блок видео+PDF под продуктом */
+        .product-extra {
+            margin-top: 3rem;
+            padding-top: 2.5rem;
+            border-top: 2px solid rgba(1, 74, 79, 0.06);
+        }
+
+        .product-extra h3 {
+            font-size: 1.4rem;
+            color: var(--color-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .product-extra .extra-video-wrap {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 12px 40px rgba(1, 74, 79, 0.12);
+            background: #000;
+        }
+
+        .product-extra .extra-video-wrap video {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 24px;
+        }
+
+        .product-extra .download-wrapper { text-align: center; }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 34px;
+            background: var(--color-primary);
+            color: var(--color-white);
+            border-radius: 60px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.78rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 25px rgba(1, 74, 79, 0.2);
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            background: var(--color-secondary);
+            box-shadow: 0 8px 35px rgba(9, 151, 154, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .download-btn i { font-size: 1rem; }
+
+        /* ============================================================
+           О ЦЕНТРЕ
+           ============================================================ */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 2.5rem;
+        }
+
+        .about-card {
+            background: var(--bg-white);
+            border-radius: 24px;
+            padding: 2.2rem;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 20px rgba(1, 74, 79, 0.04);
+            position: relative;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-mint));
+        }
+
+        .about-card:hover {
+            box-shadow: 0 16px 50px rgba(1, 74, 79, 0.1);
+            transform: translateY(-6px);
+        }
+
+        .about-card .about-symbol {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--color-mint);
+            margin-bottom: 1rem;
+            display: block;
+            line-height: 1;
+        }
+
+        .about-card .about-label {
+            font-family: var(--font-heading);
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--color-secondary);
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .about-card .about-text {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+
+        .about-card .about-text strong { color: var(--color-primary); font-weight: 700; }
+        .about-card .about-text .highlight-text { color: var(--color-secondary); font-weight: 700; }
+
+        /* ============================================================
+           НОВОСТИ И ССЫЛКИ (ТОЛЬКО В О ЦЕНТРЕ)
+           ============================================================ */
+        .news-in-about {
+            margin-top: 3.5rem;
+            padding-top: 2.5rem;
+            border-top: 2px solid rgba(1, 74, 79, 0.06);
+        }
+
+        .news-in-about .section-badge {
+            margin-bottom: 1.5rem;
+        }
+
+        .news-list { display: flex; flex-direction: column; gap: 1.2rem; }
+
+        .news-card {
+            background: var(--bg-white);
+            border-radius: 20px;
+            padding: 1.8rem 2rem;
+            border: 1px solid var(--border-light);
+            box-shadow: 0 4px 20px rgba(1, 74, 79, 0.03);
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .news-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(180deg, var(--color-primary), var(--color-mint));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .news-card:hover::before { opacity: 1; }
+
+        .news-card:hover {
+            box-shadow: 0 12px 40px rgba(1, 74, 79, 0.08);
+            transform: translateY(-3px);
+        }
+
+        .news-card .news-date {
+            font-family: var(--font-heading);
+            font-size: 0.75rem;
+            color: var(--color-secondary);
+            min-width: 90px;
+            padding-top: 0.3rem;
+            letter-spacing: 0.05em;
+            flex-shrink: 0;
+        }
+
+        .news-card .news-content { flex: 1; }
+
+        .news-card .news-content p {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .news-card .news-content strong { color: var(--color-primary); font-weight: 700; }
+
+        .news-card .news-link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            background: var(--color-primary);
+            color: var(--color-white);
+            border-radius: 60px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(1, 74, 79, 0.15);
+        }
+
+        .news-card .news-link-btn:hover {
+            background: var(--color-secondary);
+            box-shadow: 0 8px 25px rgba(9, 151, 154, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .links-section {
+            margin-top: 3.5rem;
+            padding-top: 2.5rem;
+            border-top: 2px solid rgba(1, 74, 79, 0.06);
+        }
+
+        .links-section h3 {
+            font-size: 1.3rem;
+            color: var(--color-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .link-card {
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem 1.8rem;
+            background: var(--bg-white);
+            border-radius: 20px;
+            border: 1.5px solid transparent;
+            background-image: linear-gradient(var(--bg-white), var(--bg-white)),
+                              linear-gradient(135deg, var(--color-primary), var(--color-mint));
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 120px;
+            justify-content: center;
+        }
+
+        .link-card:hover {
+            box-shadow: 0 12px 40px rgba(1, 74, 79, 0.12);
+            transform: translateY(-4px);
+        }
+
+        .link-card .link-icon {
+            font-size: 1.2rem;
+            color: var(--color-secondary);
+            margin-bottom: 0.8rem;
+        }
+
+        .link-card .link-title {
+            font-family: var(--font-heading);
+            font-size: 0.9rem;
+            color: var(--color-primary);
+            line-height: 1.4;
+        }
+
+        /* ============================================================
+           КАК НАЧАТЬ
+           ============================================================ */
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-start;
+            padding: 1.5rem 2rem;
+            background: var(--bg-white);
+            border-radius: 20px;
+            border: 1px solid var(--border-light);
+            transition: all 0.4s ease;
+            border-left: 4px solid var(--color-mint);
+        }
+
+        .step-item:hover {
+            box-shadow: 0 8px 30px rgba(1, 74, 79, 0.07);
+            transform: translateX(6px);
+        }
+
+        .step-number {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--color-secondary);
+            min-width: 40px;
+            line-height: 1;
+            padding-top: 0.2rem;
+        }
+
+        .step-content h4 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            color: var(--color-primary);
+            margin-bottom: 0.4rem;
+        }
+
+        .step-content p {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* ============================================================
+           ПОЧЕМУ МЫ
+           ============================================================ */
+        .advantages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .advantage-card {
+            padding: 2rem;
+            background: var(--bg-white);
+            border-radius: 24px;
+            border: 1px solid var(--border-light);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .advantage-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-mint));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .advantage-card:hover::before { opacity: 1; }
+
+        .advantage-card:hover {
+            box-shadow: 0 12px 40px rgba(1, 74, 79, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .advantage-card .icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: block;
+            color: var(--color-secondary);
+        }
+
+        .advantage-card h4 {
+            font-family: var(--font-heading);
+            font-size: 1rem;
+            color: var(--color-primary);
+            margin-bottom: 0.6rem;
+        }
+
+        .advantage-card p {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            line-height: 1.6;
+        }
+
+        /* ============================================================
+           ПОДВАЛ
+           ============================================================ */
+        .footer {
+            background: var(--color-primary);
+            color: var(--color-white);
+            padding: 4rem 2rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .footer .container { max-width: 1200px; }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer h4 {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            color: var(--color-mint);
+        }
+
+        .footer p, .footer a {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            display: block;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover { color: var(--color-mint); text-decoration: underline; }
+
+        .footer .contact-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 0.8rem;
+        }
+
+        .footer .contact-item i {
+            color: var(--color-mint);
+            font-size: 1rem;
+            min-width: 20px;
+            padding-top: 0.2rem;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+            text-align: center;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* ============================================================
+           АДАПТИВНОСТЬ
+           ============================================================ */
+        @media (max-width: 1024px) {
+            .nav-links a { padding: 6px 12px; font-size: 0.65rem; }
+        }
+
+        @media (max-width: 900px) {
+            .nav-logo .logo-desktop { display: none; }
+            .nav-logo .logo-mobile { display: flex; }
+            .burger-btn { display: flex; }
+
+            .nav-links {
+                position: absolute;
+                top: 72px;
+                left: 0;
+                width: 100%;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 0.3rem;
+                border-bottom: 1px solid rgba(1, 74, 79, 0.06);
+                box-shadow: 0 20px 40px rgba(1, 74, 79, 0.08);
+                transform: translateY(-120%);
+                opacity: 0;
+                pointer-events: none;
+                transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                border-radius: 0 0 20px 20px;
+                max-height: calc(100vh - 72px);
+                overflow-y: auto;
+            }
+
+            .nav-links.open {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .nav-links a {
+                padding: 12px 20px;
+                font-size: 0.8rem;
+                width: 100%;
+                text-align: left;
+            }
+
+            .nav-links a.active {
+                background: transparent;
+                color: var(--color-primary);
+                box-shadow: none;
+                border-radius: 0;
+                border-bottom: 2px solid var(--color-primary);
+                padding-bottom: 10px;
+            }
+
+            /* Адаптация фона Саудовской Аравии */
+            .hero-bg-photo {
+                background-position: center 60%;
+            }
+
+            .hero-content {
+                padding: 2rem 1.5rem;
+                border-radius: 24px;
+            }
+        }
+        .hero-bg-photo {
+    display: none;
+}
+
+        @media (max-width: 768px) {
+            .main-nav { padding: 0 1rem; }
+            .nav-container { height: 64px; }
+
+            .nav-logo .logo-mobile img { height: 36px; }
+
+            section.main-section { padding: 80px 1.2rem 60px; }
+
+            .hero-content-wrapper {
+                padding: 100px 1.2rem 40px;
+            }
+
+            .hero-content {
+                padding: 1.8rem 1.5rem;
+            }
+
+            .hero-title { margin-bottom: 1.5rem; font-size: 1.5rem; }
+
+            .hero-stats {
+                gap: 1.5rem;
+                flex-direction: column;
+            }
+            .hero-stat .number { font-size: 1.8rem; }
+
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+
+            /* Продукты */
+            .product-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .product-header h3 {
+                font-size: 1.4rem;
+                min-width: auto;
+            }
+            .product-price {
+                font-size: 0.95rem;
+                padding: 8px 18px;
+                align-self: center;
+                white-space: normal;
+                word-break: break-word;
+                overflow-wrap: break-word;
+                text-align: center;
+                max-width: 100%;
+            }
+
+            .product-body, .product-body p, .product-body ul, .product-body ul li,
+            .product-header h3, .product-price {
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+                word-break: break-word;
+                hyphens: auto;
+            }
+
+            .price-table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            /* Карточки продуктов — карусель на мобильных */
+            .products-cards {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                gap: 1rem;
+                padding-bottom: 0.5rem;
+                scrollbar-width: none;
+            }
+            .products-cards::-webkit-scrollbar { display: none; }
+
+            .product-card {
+                flex: 0 0 80%;
+                scroll-snap-align: start;
+            }
+
+            .products-carousel-nav {
+                display: flex;
+            }
+
+            /* Блок продуктов на мобильных — на всю ширину, без скруглений */
+            .products-in-hero {
+                border-radius: 0;
+                margin-left: -1.2rem;
+                margin-right: -1.2rem;
+                width: calc(100% + 2.4rem);
+                max-width: none;
+                padding: 40px 1.2rem 60px;
+                background: rgba(255, 255, 255, 0.85);
+            }
+
+            .step-item { flex-direction: column; gap: 0.8rem; padding: 1.2rem; }
+
+            .news-card { flex-direction: column; gap: 0.8rem; }
+            .news-card .news-date { min-width: auto; }
+
+            .links-grid { grid-template-columns: 1fr; max-width: 100%; }
+
+            .footer { padding: 3rem 1.2rem 1.5rem; }
+
+            /* Планеты на мобильных */
+            .bg-planet.left {
+                width: 55vw;
+                height: 55vw;
+                max-width: 240px;
+                max-height: 240px;
+                left: -6%;
+                top: 6%;
+                right: auto;
+                bottom: auto;
+            }
+            .bg-planet.right {
+                width: 85vw;
+                height: 85vw;
+                max-width: 420px;
+                max-height: 420px;
+                right: -12%;
+                bottom: 3%;
+                left: auto;
+                top: auto;
+            }
+
+            .hero-credit {
+                bottom: 8px;
+                right: 10px;
+                font-size: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-logo .logo-mobile img { height: 32px; }
+
+            .section-title { font-size: 1.6rem; }
+
+            .product-tab { padding: 10px 18px; font-size: 0.7rem; }
+            .btn { padding: 12px 24px; font-size: 0.8rem; }
+
+            .about-card { padding: 1.5rem; }
+            .about-card .about-symbol { font-size: 1.6rem; }
+
+            .hero-content {
+                padding: 1.2rem 1rem;
+            }
+
+            .product-card {
+                flex: 0 0 85%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ФОНОВЫЕ ПЛАНЕТЫ -->
+    <div class="bg-planet left"></div>
+    <div class="bg-planet right"></div>
+
+    <!-- НАВИГАЦИЯ -->
+    <nav class="main-nav" id="mainNav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-desktop">
+                    <img src="logo.png" alt="ЦМК">
+                    <div class="logo-text">
+                        <span class="top">АНО «ЦМК»</span>
+                        <span class="bottom">Центр международной кооперации</span>
+                    </div>
+                </div>
+                <div class="logo-mobile">
+                    <img src="logotext.png" alt="ЦМК">
+                </div>
+            </div>
+
+            <button class="burger-btn" id="burgerBtn" aria-label="Меню">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero" class="active" data-target="hero">Сотрудничество</a></li>
+                <li><a href="#about" data-target="about">О Центре</a></li>
+                <li><a href="#how-to-start" data-target="how-to-start">Как начать</a></li>
+                <li><a href="#why-us" data-target="why-us">Почему мы</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ГЛАВНАЯ (СОТРУДНИЧЕСТВО + ПРОДУКТЫ) -->
+    <section id="hero" class="main-section active">
+        <div class="hero-section">
+            <div class="hero-content-wrapper">
+                <div class="container">
+                    <div class="hero-block">
+                        <div class="hero-bg-photo"></div>
+                        <div class="hero-content">
+                            <div class="section-badge">Коммерческое предложение</div>
+                            <h1 class="hero-title">
+                                Выход на рынок<br>
+                                <span class="highlight">Королевства Саудовская Аравия</span><br>
+                            </h1>
+
+                            <!-- ЦИФРЫ -->
+                            <div class="hero-stats">
+                                <div class="hero-stat">
+                                    <div class="number">3+</div>
+                                    <div class="label">триллиона долларов<br>инвестиций КСА</div>
+                                </div>
+                                <div class="hero-stat">
+                                    <div class="number">57</div>
+                                    <div class="label">стран с населением<br>2,1 млрд человек</div>
+                                </div>
+                                <div class="hero-stat">
+                                    <div class="number">40%</div>
+                                    <div class="label">минимальная<br>локализация производства</div>
+                                </div>
+                            </div>
+
+                            <!-- РЕАЛЬНОЕ ВИДЕО -->
+                           <div class="hero-video-wrap">
+    <video controls playsinline preload="metadata" autoplay muted loop>
+        <source src="video1.mp4" type="video/mp4">
+        Ваш браузер не поддерживает воспроизведение видео.
+    </video>
+</div>
+                            <div class="hero-credit">Изображение на Magnific</div>
+                        </div>
+                    </div>
+
+                    <!-- ВСТУПИТЕЛЬНЫЙ ТЕКСТ ИЗ КОММЕРЧЕСКОГО ПРЕДЛОЖЕНИЯ -->
+                    <div class="hero-intro-text">
+                        <p><strong>Саудовская Аравия сегодня</strong> — это рынок, который переживает беспрецедентный промышленный и строительный бум. В рамках программы «Vision 2030» государство вкладывает более 3 триллионов долларов в создание собственной промышленности, локализацию производств и инфраструктуру. Только строительный рынок до конца десятилетия оценивается в сотни миллиардов долларов.</p>
+                        <p>Одновременно с этим российские производственные предприятия сталкиваются с падением внутреннего спроса, дорогими кредитами, санкционными ограничениями и закрытием традиционных экспортных рынков.</p>
+                        <p>АНО «Центр международной кооперации» (АНО «ЦМК») предлагает решение: организованный вход на рынок Королевства Саудовская Аравия через локализацию производства и получение статуса «Сделано в Саудовской Аравии», что открывает доступ к рынкам 57 стран с населением 2,1 млрд человек.</p>
+                        <p>Мы не продаём «консультации» и «сопровождение». Мы предлагаем входной билет в закрытый клуб, доступ к саудовским элитам, государственным тендерам B&G и B&B и к пулу инвестиционных проектов, уже проработанных с саудовской стороной.</p>
+                    </div>
+
+                    <!-- ПЕРВЫЕ 3 ПУНКТА ИЗ «ПОЧЕМУ ЭТО ВЫГОДНО ИМЕННО СЕЙЧАС» -->
+                    <div class="hero-why-now">
+                        <h3>Почему это выгодно именно сейчас</h3>
+                        <div class="hero-why-now-list">
+                            <div class="hero-why-now-item">
+                                <div class="num">1</div>
+                                <p><strong>Окно возможностей открыто.</strong> Саудовская сторона заинтересована в российских технологиях и компетенциях именно сейчас, на стадии формирования промышленной инфраструктуры. Через 2–3 года входной порог будет выше в разы.</p>
+                            </div>
+                            <div class="hero-why-now-item">
+                                <div class="num">2</div>
+                                <p><strong>Конкуренты активизируются.</strong> Китайские, турецкие и европейские компании уже получают контракты на сотни миллионов долларов. Промедление означает потерю позиций.</p>
+                            </div>
+                            <div class="hero-why-now-item">
+                                <div class="num">3</div>
+                                <p><strong>Локализация — ключ к рынку.</strong> Прямая покупка продукции из России не рассматривается. Саудовские инвесторы финансируют только создание совместных предприятий с локализацией не менее 40% производственного цикла на территории КСА.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ПРОДУКТЫ (ПЕРЕНЕСЕНЫ СЮДА) -->
+                <div class="products-in-hero" id="products">
+                    <div class="container">
+                        <div class="section-badge">Продукты и услуги</div>
+                        <h2 class="section-title">Продукты и услуги <span class="accent">АНО «ЦМК»</span></h2>
+                        <p class="section-subtitle">Мы предлагаем три формата сотрудничества. Вы можете начать с любого — и перейти к следующему по мере роста доверия и результатов.</p>
+
+                        <!-- КАРТОЧКИ ПРОДУКТОВ (НАД КНОПКАМИ) -->
+                        <div class="products-cards-wrap">
+                            <div class="products-cards" id="productsCards">
+                                <div class="product-card">
+                                    <span class="card-num">Продукт 1</span>
+                                    <span class="card-title">«Дорожная карта входа на рынок КСА»</span>
+                                    <span class="card-price">500 000 – 1 000 000 руб.</span>
+                                    <span class="card-for">Для тех, кто хочет получить ясность и оценить потенциал без больших затрат</span>
+                                </div>
+                                <div class="product-card">
+                                    <span class="card-num">Продукт 2</span>
+                                    <span class="card-title">«Пакет входа на рынок КСА»</span>
+                                    <span class="card-price">от 900 000 руб./мес.</span>
+                                    <span class="card-for">Для тех, кто принял решение выходить на рынок и нуждается в полном сопровождении</span>
+                                </div>
+                                <div class="product-card">
+                                    <span class="card-num">Продукт 3</span>
+                                    <span class="card-title">«Пул соинвесторов» (платное членство)</span>
+                                    <span class="card-price">500 000 – 1 500 000 руб.</span>
+                                    <span class="card-for">Для капитала, ищущего доходные активы за пределами российской юрисдикции</span>
+                                </div>
+                                <div class="product-card">
+                                    <span class="card-num">Продукт 4</span>
+                                    <span class="card-title">Аналитические отчёты по рынку КСА</span>
+                                    <span class="card-price">от 300 000 руб.</span>
+                                    <span class="card-for">Для тех, кому нужна готовая аналитика по рынку, тендерам и рискам КСА</span>
+                                </div>
+                            </div>
+                            <div class="products-carousel-nav">
+                                <button id="productsPrev" aria-label="Назад"><i class="fas fa-chevron-left"></i></button>
+                                <button id="productsNext" aria-label="Вперёд"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="product-tabs">
+                            <button class="product-tab active" data-tab="product1">Дорожная карта</button>
+                            <button class="product-tab" data-tab="product2">Пакет входа на рынок</button>
+                            <button class="product-tab" data-tab="product3">Пул соинвесторов</button>
+                            <button class="product-tab" data-tab="product4">Аналитические отчёты</button>
+                        </div>
+
+                        <!-- Панель 1 -->
+                        <div class="product-panel active" id="product1">
+                            <div class="card">
+                                <div class="product-header">
+                                    <h3>Продукт 1. «Дорожная карта входа на рынок КСА»</h3>
+                                    <div class="product-price">500 000 – 1 000 000 руб.</div>
+                                </div>
+                                <div class="product-body">
+                                    <h4>Суть продукта</h4>
+                                    <p>Это аналитический и переговорный продукт, который даёт вам ясность за 2–3 недели. Вы получаете ответ на главный вопрос: стоит ли вашему предприятию выходить на рынок Саудовской Аравии, и если да — то как именно.</p>
+
+                                    <h4>Что входит</h4>
+                                    <p><strong>1. Аналитический отчёт по рынку КСА (по вашей отрасли)</strong></p>
+                                    <ul>
+                                        <li>Объём рынка, динамика, ключевые игроки.</li>
+                                        <li>Государственные программы и приоритеты локализации (Vision 2030, NEOM, ЧМ-2034, Expo 2030).</li>
+                                        <li>Требования к локализации и сертификации продукции.</li>
+                                        <li>Конкурентная среда: кто уже присутствует, какие ниши свободны.</li>
+                                        <li>Прогноз спроса и ценообразования.</li>
+                                    </ul>
+
+                                    <p><strong>2. Анализ вашего предприятия и продукции</strong></p>
+                                    <ul>
+                                        <li>Оценка соответствия вашей продукции приоритетам КСА.</li>
+                                        <li>Оценка готовности к локализации и трансферу технологий.</li>
+                                        <li>Выявление конкурентных преимуществ и слабых мест.</li>
+                                        <li>Предварительная оценка инвестиционной привлекательности проекта.</li>
+                                    </ul>
+
+                                    <p><strong>3. Упаковка презентации на английском языке</strong></p>
+                                    <ul>
+                                        <li>Подготовка презентационных материалов для саудовской стороны.</li>
+                                        <li>Адаптация под местную деловую культуру и ментальность.</li>
+                                    </ul>
+
+                                    <p><strong>4. Первичные переговоры с саудовской стороной</strong></p>
+                                    <ul>
+                                        <li>Проведение переговоров с нашими саудовскими партнёрами (без выезда).</li>
+                                        <li>Выявление их заинтересованности в вашей продукции и технологиях.</li>
+                                    </ul>
+
+                                    <p><strong>5. Письменный отчёт с рекомендациями</strong></p>
+                                    <ul>
+                                        <li>Решение: идти / не идти.</li>
+                                        <li>Пошаговый план действий на 6–12 месяцев.</li>
+                                        <li>Оценка рисков и способов их снижения.</li>
+                                    </ul>
+
+                                    <h4>Что вы получаете на выходе</h4>
+                                    <ul>
+                                        <li><strong>Ясность.</strong> Вы понимаете, есть ли смысл тратить деньги и время на выход на рынок КСА.</li>
+                                        <li><strong>Экономию.</strong> Вы не тратите миллионы на самостоятельные поездки, переговоры и аналитику.</li>
+                                        <li><strong>Готовый план.</strong> У вас на руках пошаговая дорожная карта с конкретными шагами.</li>
+                                    </ul>
+
+                                    <h4>Стоимость</h4>
+                                    <p>500 000 – 1 000 000 руб. (в зависимости от отрасли и сложности анализа). Срок: 2–3 недели. Оплата: 100% предоплата.</p>
+
+                                    <h4>Почему это выгодно</h4>
+                                    <p>Это низкий порог входа. Вы инвестируете полмиллиона рублей, чтобы не потерять миллионы на самостоятельном выходе на рынок. Если результат</p>
+                                </div>
+
+                                <div class="product-extra">
+                                    <h3>Наши дополнительные возможности</h3>
+                                    <div class="extra-video-wrap">
+                                        <video controls playsinline preload="metadata">
+                                            <source src="video2.mp4" type="video/mp4">
+                                            Ваш браузер не поддерживает воспроизведение видео.
+                                        </video>
+                                    </div>
+                                    <div class="download-wrapper">
+                                        <a href="cmk_doc.pdf" target="_blank" rel="noopener" class="download-btn">
+                                            <i class="fas fa-file-pdf"></i>
+                                            Открыть презентацию в PDF
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Панель 2 -->
+                        <div class="product-panel" id="product2">
+                            <div class="card">
+                                <div class="product-header">
+                                    <h3>Продукт 2. «Пакет входа на рынок КСА»</h3>
+                                    <div class="product-price">от 900 000 руб./мес.</div>
+                                </div>
+                                <div class="product-body">
+                                    <h4>Суть продукта</h4>
+                                    <p>Это полное сопровождение вашего предприятия от первого контакта с саудовской стороной до запуска совместного предприятия и начала производства. Мы берём на себя все процедуры, переговоры, аналитику и организацию.</p>
+
+                                    <h4>Что входит</h4>
+                                    <p><strong>Этап 1. Анализ и упаковка (2–3 недели)</strong></p>
+                                    <ul>
+                                        <li>Всё, что входит в «Дорожную карту» (аналитический отчёт, анализ предприятия, упаковка презентации).</li>
+                                        <li>Формирование профиля партнёра и модели совместного предприятия.</li>
+                                        <li>Согласование заинтересованности саудовской стороны.</li>
+                                    </ul>
+
+                                    <p><strong>Этап 2. Выезд в Эр-Рияд (1 неделя)</strong></p>
+                                    <ul>
+                                        <li>Организация командировки делегации (3 человека от ЦМК).</li>
+                                        <li>Встречи с саудовскими партнёрами, презентация компетенций.</li>
+                                        <li>Знакомство с потенциальными заказчиками и представителями элит.</li>
+                                        <li>Переговоры о создании совместного предприятия.</li>
+                                    </ul>
+
+                                    <p><strong>Этап 3. Сопровождение создания СП (до 6 месяцев)</strong></p>
+                                    <ul>
+                                        <li>Подписание меморандума о намерениях (MOU), NDA, эксклюзив по сделке.</li>
+                                        <li>Обмен данными, расчёт себестоимости, расчёт запуска и точки безубыточности.</li>
+                                        <li>Анализ возможностей СП (совместный разбор бизнес-кейса, решение «идём / не идём»).</li>
+                                        <li>Подписание финальных соглашений акционеров, управления и интеллектуальной собственности.</li>
+                                        <li>Регистрация совместного предприятия в КСА за 21 день.</li>
+                                        <li>Запуск операций.</li>
+                                    </ul>
+
+                                    <p><strong>Этап 4. Масштабирование и выход</strong></p>
+                                    <ul>
+                                        <li>Масштабирование операций, привлечение суверенных фондов.</li>
+                                        <li>Выход на IPO на бирже Tadawul (по желанию сторон).</li>
+                                    </ul>
+
+                                    <h4>Что вы получаете на выходе</h4>
+                                    <ul>
+                                        <li><strong>Доступ к рынку.</strong> Ваша продукция получает статус «Сделано в Саудовской Аравии» и доступ к рынкам 57 стран.</li>
+                                        <li><strong>Инвестиции.</strong> Саудовский партнёр обеспечивает землю, цеха, склады, логистику, жильё для персонала, офисы, IT-инфраструктуру и все операционные расходы после запуска.</li>
+                                        <li><strong>Гарантированный сбыт.</strong> Доступ к государственным тендерам B&G и B&B, долгосрочные контракты с крупными госзаказчиками.</li>
+                                        <li><strong>Налоговые льготы.</strong> 3 года без налогов + продлеваемые трудовые льготы.</li>
+                                        <li><strong>Дешёвые ресурсы.</strong> Электроэнергия — 0,039 долл./кВт·ч, газ — 0,24 долл./литр, вода от 50 куб.м — бесплатно.</li>
+                                        <li><strong>Обход санкций.</strong> Локализация производства и статус «Сделано в Саудовской Аравии» снимают экспортные ограничения.</li>
+                                        <li><strong>Операционное управление.</strong> Полное операционное управление остаётся за российской стороной.</li>
+                                    </ul>
+
+                                    <h4>Стоимость</h4>
+                                    <table class="price-table">
+                                        <thead>
+                                            <tr><th>Мероприятие</th><th>Стоимость</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>Согласование заинтересованности саудовской стороны</td><td>Без оплаты</td></tr>
+                                            <tr><td>Командировка в Эр-Рияд (5 дней, 3 рабочих дня, делегация 3 чел.)</td><td>~$11 700–16 500 (по актуальным ценам)</td></tr>
+                                            <tr><td>Сопровождение создания СП (до 6 месяцев)</td><td>900 000 – 1 200 000 руб./мес.</td></tr>
+                                            <tr><td>Гонорар успеха</td><td>5% от стоимости сделки / привлечённых инвестиций</td></tr>
+                                            <tr><td>Доля ЦМК в создаваемом СП</td><td>5–15% (определяется в ходе переговоров)</td></tr>
+                                        </tbody>
+                                    </table>
+
+                                    <p><strong>Оплата:</strong> предоплата за каждый этап. Мы не работаем по факту, поскольку несём расходы на поездки, переговоры и аналитику с первого дня.</p>
+
+                                    <h4>Почему это выгодно</h4>
+                                    <p>Вы получаете <strong>снижение риска.</strong> Мы уже знаем, как выходить на рынок КСА, и уже имеем контакты. Вы не тратите годы на самостоятельное выстраивание отношений. Вы платите за то, чтобы не потерять деньги на ошибках.</p>
+                                </div>
+
+                                <div class="product-extra">
+                                    <h3>Наши дополнительные возможности</h3>
+                                    <div class="extra-video-wrap">
+                                        <video controls playsinline preload="metadata">
+                                            <source src="video2.mp4" type="video/mp4">
+                                            Ваш браузер не поддерживает воспроизведение видео.
+                                        </video>
+                                    </div>
+                                    <div class="download-wrapper">
+                                        <a href="cmk_doc.pdf" target="_blank" rel="noopener" class="download-btn">
+                                            <i class="fas fa-file-pdf"></i>
+                                            Открыть презентацию в PDF
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Панель 3 -->
+                        <div class="product-panel" id="product3">
+                            <div class="card">
+                                <div class="product-header">
+                                    <h3>Продукт 3. «Пул соинвесторов» (платное членство)</h3>
+                                    <div class="product-price">500 000 – 1 500 000 руб. (вступительный взнос)</div>
+                                </div>
+                                <div class="product-body">
+                                    <h4>Суть продукта</h4>
+                                    <p>Это <strong>закрытый пул соинвесторов</strong>, который получает эксклюзивные права на финансирование проектов, верифицированных инвесторами Королевства Саудовская Аравия. Объём государственных инвестиций КСА в программу Vision 2030 — более <strong>3 триллионов долларов.</strong></p>
+
+                                    <h4>Для кого это предложение</h4>
+                                    <p>Для капитала, ищущего тихую гавань за пределами российской юрисдикции и желающего заработать на историческом росте экономики КСА (ВВП +4% в год, 1-е место в регионе).</p>
+
+                                    <h4>Что вы получаете как член пула</h4>
+                                    <p><strong>1. Доступ к эксклюзивным проектам</strong></p>
+                                    <ul>
+                                        <li>Наш пул саудовских партнёров ежемесячно предоставляет <strong>5–10 запросов на закупку</strong> (от стали до медоборудования).</li>
+                                        <li>Вы первыми видите эти офферы и выбираете лучшие для со-финансирования, минуя конкурентов.</li>
+                                    </ul>
+
+                                    <p><strong>2. Приоритетное право на «Фабрику проектов»</strong></p>
+                                    <ul>
+                                        <li>Вы получаете доступ к проектам, уже проработанным с саудовской стороной.</li>
+                                        <li>У вас есть возможность войти в капитал создаваемых совместных предприятий.</li>
+                                    </ul>
+
+                                    <p><strong>3. Капитализация медийно-цифровой платформы</strong></p>
+                                    <ul>
+                                        <li>Мы строим авторитетное бизнес-СМИ по теме экспорта высоких технологий.</li>
+                                        <li>Вы становитесь совладельцем медийного актива.</li>
+                                        <li>Планируемый рост стоимости платформы — <strong>от 15 млн руб. до 200 млн руб. за 3 года.</strong></li>
+                                    </ul>
+
+                                    <p><strong>4. Аналитические отчёты по рынку КСА</strong></p>
+                                    <ul>
+                                        <li>Ежемесячные обзоры рынка, тендеров, государственных программ.</li>
+                                        <li>Аналитика по конкретным отраслям и проектам.</li>
+                                        <li>Данные о ценообразовании, спросе и конкурентной среде.</li>
+                                    </ul>
+
+                                    <p><strong>5. PR-поддержка</strong></p>
+                                    <ul>
+                                        <li>Ваши публичные выступления на экономических форумах в Эр-Рияде за наш счёт.</li>
+                                        <li>Размещение вашего бренда на наших материалах и мероприятиях.</li>
+                                    </ul>
+
+                                    <p><strong>6. Юридический комплаенс</strong></p>
+                                    <ul>
+                                        <li>Полное соблюдение норм Шариата и законов КСА.</li>
+                                        <li>Защита ваших активов.</li>
+                                    </ul>
+
+                                    <p><strong>7. Контракты</strong></p>
+                                    <ul>
+                                        <li>Мы гарантируем подписание не менее <strong>2 соглашений о намерениях (MOUs)</strong> с саудовской стороной в течение первых 6 месяцев сотрудничества.</li>
+                                    </ul>
+
+                                    <h4>Механизм партнёрства</h4>
+                                    <p><strong>Ваши обязательства (инвестиция):</strong></p>
+                                    <ul>
+                                        <li>Взнос в уставную деятельность — обеспечивает работу нашей команды переговорщиков, юристов и аналитиков в КСА.</li>
+                                        <li>Спонсорство платформы — создание вашего имиджа «пионера российского экспорта» в глазах саудовских чиновников.</li>
+                                    </ul>
+
+                                    <p><strong>Наши обязательства (возврат инвестиций):</strong></p>
+                                    <ul>
+                                        <li>Юридический комплаенс и защита активов.</li>
+                                        <li>Контракты (не менее 2 MOUs за 6 месяцев).</li>
+                                        <li>PR-поддержка.</li>
+                                    </ul>
+
+                                    <h4>Дорожная карта для инвестора</h4>
+                                    <table class="price-table">
+                                        <thead>
+                                            <tr><th>Период</th><th>Мероприятие</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>Месяц 1</td><td>Подписание NDA. Доступ к реальным заявкам из КСА (без названий компаний, но с цифрами контрактов)</td></tr>
+                                            <tr><td>Месяц 2–3</td><td>инвестиций КСА</td></tr>
+                                            <tr><td>Месяц 4–6</td><td>Purpose Vehicle)</td></tr>
+                                            <tr><td>Год 2–3</td><td>стратегу. Прибыль: выход с коэффициентом 3x–5x</td></tr>
+                                        </tbody>
+                                    </table>
+
+                                    <h4>Стоимость</h4>
+                                    <p>Вступительный взнос: 500 000 – 1 500 000 руб. (единоразово). Ежемесячный взнос: 150 000 – 300 000 руб./мес. (по согласованию). Доля в проектах: определяется в ходе переговоров.</p>
+                                    <p><strong>Важно:</strong> входной порог будет повышен в 3 раза через 2–3 месяца, когда начнётся локализация. Сейчас — лучшее время для входа.</p>
+
+                                    <h4>Вы получаете доступ к закрытому клубу</h4>
+                                    <p>Это не «консультации» — это эксклюзивное право первым видеть лучшие проекты и выбирать их для со-финансирования. Вы зарабатываете в валюте (SAR или USD) на счетах в дружественных банках.</p>
+                                </div>
+
+                                <div class="product-extra">
+                                    <h3>Наши дополнительные возможности</h3>
+                                    <div class="extra-video-wrap">
+                                        <video controls playsinline preload="metadata">
+                                            <source src="video2.mp4" type="video/mp4">
+                                            Ваш браузер не поддерживает воспроизведение видео.
+                                        </video>
+                                    </div>
+                                    <div class="download-wrapper">
+                                        <a href="cmk_doc.pdf" target="_blank" rel="noopener" class="download-btn">
+                                            <i class="fas fa-file-pdf"></i>
+                                            Открыть презентацию в PDF
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Панель 4 -->
+                        <div class="product-panel" id="product4">
+                            <div class="card">
+                                <div class="product-header">
+                                    <h3>Аналитические отчёты по рынку КСА</h3>
+                                    <div class="product-price">от 300 000 руб.</div>
+                                </div>
+                                <div class="product-body">
+                                    <h4>Суть продукта</h4>
+                                    <p>Аналитические отчёты — это отдельный продукт, который мы предлагаем как самостоятельную услугу, так и в составе пакетов.</p>
+
+                                    <h4>Что входит в отчёт</h4>
+                                    <p><strong>1. Макроэкономический обзор</strong></p>
+                                    <ul>
+                                        <li>Динамика ВВП, инвестиционный климат, рейтинг конкурентоспособности.</li>
+                                        <li>Государственные программы: Vision 2030, NEOM, THE LINE, Новый Эр-Рияд, ЧМ-2034, Ехро 2030.</li>
+                                        <li>Объём государственных инвестиций и приоритетные отрасли.</li>
+                                    </ul>
+
+                                    <p><strong>2. Отраслевой анализ</strong></p>
+                                    <ul>
+                                        <li>Объём рынка по вашей отрасли.</li>
+                                        <li>Ключевые игроки и конкурентная среда.</li>
+                                        <li>Требования к локализации и сертификации.</li>
+                                        <li>Прогноз спроса и ценообразования.</li>
+                                    </ul>
+
+                                    <p><strong>3. Анализ тендеров и государственных закупок</strong></p>
+                                    <ul>
+                                        <li>Доступ к тендерам B&G (Business-to-Government) и B&B (Business-to-Business).</li>
+                                        <li>Крупнейшие госзаказчики и их потребности.</li>
+                                        <li>Процедуры участия и требования к поставщикам.</li>
+                                    </ul>
+
+                                    <p><strong>4. Анализ рисков</strong></p>
+                                    <ul>
+                                        <li>Санкционные риски и способы их обхода.</li>
+                                    </ul>
+
+                                    <p><strong>5. Рекомендации</strong></p>
+                                    <ul>
+                                        <li>Пошаговый план входа на рынок.</li>
+                                        <li>Оценка инвестиционной привлекательности.</li>
+                                        <li>Выбор оптимальной модели локализации.</li>
+                                    </ul>
+
+                                    <h4>Стоимость</h4>
+                                    <table class="price-table">
+                                        <thead>
+                                            <tr><th>Формат</th><th>Стоимость</th></tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr><td>Базовый отчёт (1 отрасль)</td><td>300 000 – 500 000 руб.</td></tr>
+                                            <tr><td>Расширенный отчёт (1 отрасль + анализ тендеров)</td><td>500 000 – 800 000 руб.</td></tr>
+                                            <tr><td>Индивидуальный отчёт (под конкретное предприятие)</td><td>800 000 – 1 500 000 руб.</td></tr>
+                                            <tr><td>Ежемесячная подписка (обновления + аналитика)</td><td>150 000 – 300 000 руб./мес.</td></tr>
+                                        </tbody>
+                                    </table>
+
+                                    <p>Срок оплата: 100% предоплата. недели.</p>
+
+                                    <h4>Почему это выгодно</h4>
+                                    <p>Вы получаете информацию, которая стоит миллионы. Самостоятельный анализ рынка КСА требует месяцев работы и значительных затрат. Мы даём вам готовый результат за 2–4 недели.</p>
+                                </div>
+
+                                <div class="product-extra">
+                                    <h3>Наши дополнительные возможности</h3>
+                                    <div class="extra-video-wrap">
+                                        <video controls playsinline preload="metadata">
+                                            <source src="video2.mp4" type="video/mp4">
+                                            Ваш браузер не поддерживает воспроизведение видео.
+                                        </video>
+                                    </div>
+                                    <div class="download-wrapper">
+                                        <a href="cmk_doc.pdf" target="_blank" rel="noopener" class="download-btn">
+                                            <i class="fas fa-file-pdf"></i>
+                                            Открыть презентацию в PDF
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- О ЦЕНТРЕ (С НОВОСТЯМИ И ССЫЛКАМИ) -->
+    <section id="about" class="main-section">
+        <div class="container">
+            <div class="section-badge">О Центре Международной Кооперации</div>
+            <h2 class="section-title">Общая информация<br><span class="accent">о деятельности АНО «ЦМК»</span></h2>
+
+            <div class="about-grid">
+                <div class="about-card">
+                    <span class="about-symbol">◆</span>
+                    <span class="about-label">Создание</span>
+                    <div class="about-text">
+                        Автономная некоммерческая организация «Центр международной кооперации» (далее - АНО «ЦМК») создана <strong>21 мая 2025г.</strong> с целью содействия субъектам предпринимательства в сфере международной промышленной кооперации.
+                    </div>
+                </div>
+
+                <div class="about-card">
+                    <span class="about-symbol">◈</span>
+                    <span class="about-label">Суть деятельности</span>
+                    <div class="about-text">
+                        <span class="highlight-text">Суть</span>ю деятельности является формирование международных промышленных кооперационных цепочек и создание совместных российско-иностранных промышленных предприятий. Цель таких цепочек - расширение для российских предприятий рынков сбыта путём осуществления коммуникаций за рубежом и возможной релокации завершающих этапов производства за пределы подсанкционных территорий, что соответствует задачам федерального проекта <strong>«Создание зарубежной инфраструктуры»</strong> в рамках национального проекта <strong>«Международная кооперация и экспорт»</strong>.
+                    </div>
+                </div>
+
+                <div class="about-card">
+                    <span class="about-symbol">▣</span>
+                    <span class="about-label">Статус</span>
+                    <div class="about-text">
+                        АНО «ЦМК» является <strong>негосударственным институтом развития</strong> и организации международных экстерриториальных промышленных кластеров.
+                    </div>
+                </div>
+
+                <div class="about-card">
+                    <span class="about-symbol">◉</span>
+                    <span class="about-label">Цель</span>
+                    <div class="about-text">
+                        <span class="highlight-text">Цель</span>ю АНО "Центр международной кооперации" является содействие субъектам предпринимательства в сфере международной кооперации, в том числе путем образования и развития в России международных промышленных кластеров, для производства товаров или реализации совместных международных проектов.
+                    </div>
+                </div>
+            </div>
+
+            <!-- НОВОСТИ (ТЕПЕРЬ ТОЛЬКО В О ЦЕНТРЕ) -->
+            <div class="news-in-about">
+                <div class="section-badge">Деятельность АНО ЦМК</div>
+                <div class="news-list">
+                    <div class="news-card">
+                        <div class="news-date">28.04.2025</div>
+                        <div class="news-content">
+                            <p>Концепция международных промышленных кластеров представлена на <strong>международном форуме «Открытый диалог» о будущем глобальной экономики</strong>, организованном Максимом Орешкиным, заместителем Руководителя Администрации Президента РФ. Форум прошёл 28 апреля 2025 г. в Национальном центре «Россия», с участием делегатов из 46 стран, где <strong>концепция признана одной из лучших идей.</strong> Идея выиграла конкурс эссе и по итогу вошла в сборник, направленный в 106 стран мира.</p>
+                            <a href="https://vk.ru/wall710281114_1722" target="_blank" class="news-link-btn">
+                                Перейти <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="news-card">
+                        <div class="news-date">02-03.07.2025</div>
+                        <div class="news-content">
+                            <p>На форуме <strong>«Сильные идеи для нового времени»</strong>, с участием Президента Российской Федерации В.В. Путина, проводившемся 2-3 июля 2025г. мы представили концепцию международных промышленных кластеров и вошли с ней в <strong>топ-100 лучших идей России</strong>.</p>
+                            <a href="https://vk.ru/wall710281114_1764" target="_blank" class="news-link-btn">
+                                Перейти <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="news-card">
+                        <div class="news-date">06.06.2026</div>
+                        <div class="news-content">
+                            <p>06 июня 2026г. в ходе <strong>Петербургского международного экономического форума</strong> АНО «ЦМК» и Королевство Саудовская Аравия установили партнёрские взаимоотношения:</p>
+                            <a href="https://vk.ru/wall710281114_2031" target="_blank" class="news-link-btn">
+                                Перейти <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- БЛОК ССЫЛОК -->
+                <div class="links-section">
+                    <h3>Ссылки, отображающие деятельность АНО «ЦМК»</h3>
+                    <div class="links-grid">
+                        <a href="https://rg.ru/2024/07/23/zachem-rossii-nuzhny-mezhdunarodnye-promyshlennye-klastery.html" target="_blank" class="link-card">
+                            <span class="link-icon"><i class="fas fa-newspaper"></i></span>
+                            <span class="link-title">Зачем России нужны международные промышленные кластеры</span>
+                        </a>
+                        
+                        <a href="https://kuban24.tv/item/murat-dudarev-razvitie-promyshlennosti-vazhno-dlya-rossijskoj-ekonomiki" target="_blank" class="link-card">
+                            <span class="link-icon"><i class="fas fa-chart-line"></i></span>
+                            <span class="link-title">Развитие промышленности важно для российской экономики</span>
+                        </a>
+                        <a href="https://kuban24.tv/item/murat-dudarev-rossijsko-zarubezhnye-kompanii-poluchat-bolshe-mer-podderzhki" target="_blank" class="link-card">
+                            <span class="link-icon"><i class="fas fa-hand-holding-usd"></i></span>
+                            <span class="link-title">Российско-зарубежные компании получат больше мер поддержки</span>
+                        </a>
+                        <a href="https://kuban24.tv/item/murat-dudarev-kuban-vyskazala-svoe-zhelanie-byt-pilotnym-regionom-natsproekta" target="_blank" class="link-card">
+                            <span class="link-icon"><i class="fas fa-map-marked-alt"></i></span>
+                            <span class="link-title">Кубань высказала желание быть пилотным регионом нацпроекта</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- КАК НАЧАТЬ -->
+    <section id="how-to-start" class="main-section">
+        <div class="container">
+            <div class="section-badge">Как начать</div>
+            <h2 class="section-title">Как начать <span class="accent">сотрудничество</span></h2>
+
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">01</div>
+                    <div class="step-content">
+                        <h4>Вы выбираете продукт:</h4>
+                        <p>«Дорожная карта» — для первичной оценки. «Пакет входа на рынок КСА» — для полного сопровождения. «Пул соинвесторов» — для инвестирования капитала.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">02</div>
+                    <div class="step-content">
+                        <h4>Мы подписываем NDA и соглашение о конфиденциальности.</h4>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">03</div>
+                    <div class="step-content">
+                        <h4>Вы вносите предоплату за первый этап.</h4>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">04</div>
+                    <div class="step-content">
+                        <h4>Мы начинаем работу. Первые результаты — через 2–3 недели.</h4>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">05</div>
+                    <div class="step-content">
+                        <h4>По результатам первого этапа вы принимаете решение о продолжении.</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ПОЧЕМУ МЫ -->
+    <section id="why-us" class="main-section">
+        <div class="container">
+            <div class="section-badge">Почему мы</div>
+            <h2 class="section-title">Почему <span class="accent">АНО «ЦМК»</span></h2>
+
+            <div class="advantages-grid">
+                <div class="advantage-card">
+                    <span class="icon"><i class="fas fa-globe"></i></span>
+                    <h4>Мы уже внутри</h4>
+                    <p>АНО «ЦМК» заручилось поддержкой инвестиционно-проектной группы из КСА и ведёт диалог с Минпромторгом России.</p>
+                </div>
+                <div class="advantage-card">
+                    <span class="icon"><i class="fas fa-lightbulb"></i></span>
+                    <h4>Мы имеем концепцию</h4>
+                    <p>Концепция международных промышленных кластеров представлена на форуме «Открытый диалог» (организатор — Максим Орешкин, заместитель Руководителя Администрации Президента РФ) и вошла в топ-100 лучших идей России на форуме «Сильные идеи для нового времени» с участием Президента РФ В.В. Путина.</p>
+                </div>
+                <div class="advantage-card">
+                    <span class="icon"><i class="fas fa-handshake"></i></span>
+                    <h4>Мы имеем партнёрство</h4>
+                    <p>06 июня 2026 г. в ходе Петербургского международного экономического форума АНО «ЦМК» и Королевство Саудовская Аравия установили партнёрские взаимоотношения.</p>
+                </div>
+                <div class="advantage-card">
+                    <span class="icon"><i class="fas fa-industry"></i></span>
+                    <h4>Мы имеем опыт</h4>
+                    <p>Соучредители АНО «ЦМК» обладают опытом создания, аккредитации и управления технопарками в России.</p>
+                </div>
+                <div class="advantage-card">
+                    <span class="icon"><i class="fas fa-users"></i></span>
+                    <h4>Мы имеем команду</h4>
+                    <p>Сообщество высококвалифицированных специалистов в сферах промышленности, техники, технологий, науки и международного бизнеса.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ПОДВАЛ -->
+    <footer id="contacts" class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4>АНО «Центр международной кооперации»</h4>
+                    <p>Генеральный директор: Мурат Дударев</p>
+                </div>
+                <div>
+                    <h4>Контакты</h4>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <a href="tel:+79884831539">+7 988 483 1539</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:dudarev.murat83@yandex.ru">dudarev.murat83@yandex.ru</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <a href="https://yandex.ru/maps/?text=115054,%20г.%20Москва,%20ул.%20Дубининская,%20д.%2011/17,%20стр.%203" target="_blank">115054, г. Москва, ул. Дубининская, д. 11/17, стр. 3</a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Реквизиты</h4>
+                    <p>ОГРН: 1257700229643</p>
+                    <p>ИНН: 9505242750, КПП: 770501001</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>Данное предложение является универсальным. Индивидуальное предложение будет разработано в ходе детального диалога с Вашей компанией.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            'use strict';
+
+            const sections = document.querySelectorAll('section.main-section');
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const nav = document.getElementById('mainNav');
+            const burgerBtn = document.getElementById('burgerBtn');
+            const navLinksList = document.getElementById('navLinks');
+            let isAnimating = false;
+
+            // ============================================================
+            // ПЕРЕКЛЮЧЕНИЕ СЕКЦИЙ СО СМАХИВАНИЕМ ВЛЕВО
+            // ============================================================
+            function showSection(sectionId) {
+                const current = document.querySelector('section.main-section.active');
+                const target = document.getElementById(sectionId);
+
+                if (!target || current === target || isAnimating) {
+                    if (current === target) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }
+                    return;
+                }
+
+                isAnimating = true;
+
+                if (current) {
+                    current.classList.add('sliding-out');
+                    setTimeout(() => {
+                        current.classList.remove('sliding-out', 'active');
+                        current.style.transform = '';
+                    }, 700);
+                }
+
+                target.classList.add('active', 'sliding-in');
+                window.scrollTo({ top: 0, behavior: 'instant' });
+
+                setTimeout(() => {
+                    target.classList.remove('sliding-in');
+                    isAnimating = false;
+                }, 720);
+
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.dataset.target === sectionId);
+                });
+
+                if (navLinksList.classList.contains('open')) {
+                    navLinksList.classList.remove('open');
+                    burgerBtn.classList.remove('active');
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = this.dataset.target;
+                    if (target) {
+                        showSection(target);
+                        history.pushState(null, null, '#' + target);
+                    }
+                });
+            });
+
+            // ============================================================
+            // БУРГЕР-МЕНЮ
+            // ============================================================
+            burgerBtn.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinksList.classList.toggle('open');
+            });
+
+            document.addEventListener('click', function(e) {
+                if (!nav.contains(e.target) && navLinksList.classList.contains('open')) {
+                    navLinksList.classList.remove('open');
+                    burgerBtn.classList.remove('active');
+                }
+            });
+
+            // ============================================================
+            // ЗАГРУЗКА / ИСТОРИЯ
+            // ============================================================
+            window.addEventListener('load', function() {
+                const hash = window.location.hash.substring(1);
+                if (hash && document.getElementById(hash)) {
+                    const current = document.querySelector('section.main-section.active');
+                    const target = document.getElementById(hash);
+                    if (current && current !== target) {
+                        current.classList.remove('active');
+                        target.classList.add('active');
+                    }
+                    navLinks.forEach(link => {
+                        link.classList.toggle('active', link.dataset.target === hash);
+                    });
+                }
+            });
+
+            window.addEventListener('popstate', function() {
+                const hash = window.location.hash.substring(1);
+                if (hash && document.getElementById(hash)) {
+                    showSection(hash);
+                }
+            });
+
+            // ============================================================
+            // ПРОКРУТКА
+            // ============================================================
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    nav.classList.add('scrolled');
+                } else {
+                    nav.classList.remove('scrolled');
+                }
+            });
+
+            // ============================================================
+            // ТАБЫ ПРОДУКТОВ
+            // ============================================================
+            const tabs = document.querySelectorAll('.product-tab');
+            const panels = document.querySelectorAll('.product-panel');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetId = this.dataset.tab;
+                    tabs.forEach(t => t.classList.remove('active'));
+                    panels.forEach(p => p.classList.remove('active'));
+                    this.classList.add('active');
+                    const targetPanel = document.getElementById(targetId);
+                    if (targetPanel) targetPanel.classList.add('active');
+                });
+            });
+
+            // ============================================================
+            // КАРУСЕЛЬ КАРТОЧЕК ПРОДУКТОВ (мобильные)
+            // ============================================================
+            const productsCards = document.getElementById('productsCards');
+            const productsPrev = document.getElementById('productsPrev');
+            const productsNext = document.getElementById('productsNext');
+
+            if (productsCards && productsPrev && productsNext) {
+                productsPrev.addEventListener('click', function() {
+                    productsCards.scrollBy({ left: -productsCards.clientWidth * 0.85, behavior: 'smooth' });
+                });
+                productsNext.addEventListener('click', function() {
+                    productsCards.scrollBy({ left: productsCards.clientWidth * 0.85, behavior: 'smooth' });
+                });
+            }
+
+            console.log('✅ Сайт АНО «ЦМК» успешно загружен');
+        })();
+    </script>
+
+</body>
+</html>
